@@ -1,5 +1,7 @@
 package com.example.web;
 
+import com.example.config.auth.LoginUser;
+import com.example.config.auth.dto.SessionUser;
 import com.example.service.posts.PostsService;
 import com.example.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +17,11 @@ public class IndexController {
     private final PostsService postsService;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postsService.findAllDesc());
+        if(user != null) {
+            model.addAttribute("userName", user.getName());
+        }
         return "index";
     }
 
